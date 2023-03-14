@@ -32,10 +32,35 @@ class TrackOrders:
         return orders - orders_by_customer
 
     def get_days_never_visited_per_customer(self, customer):
-        return {'sabado', 'segunda-feira'}
+        days = set()
+        days_by_customer = set()
+
+        for order in self.orders:
+            days.add(order[2])
+
+        for order in self.orders:
+            if order[0] == customer:
+                days_by_customer.add(order[2])
+        return days - days_by_customer
 
     def get_busiest_day(self):
-        return 'domingo'
+        days = {}
+        for order in self.orders:
+            day = order[2]
+            if day in days:
+                days[day] += 1
+            else:
+                days[day] = 1
+
+        return max(days, key=days.get)
 
     def get_least_busy_day(self):
-        return 'segunda-feira'
+        days = {}
+        for order in self.orders:
+            day = order[2]
+            if day in days:
+                days[day] += 1
+            else:
+                days[day] = 1
+
+        return min(days, key=days.get)
