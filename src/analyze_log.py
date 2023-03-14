@@ -1,5 +1,28 @@
 import csv
-from collections import Counter
+
+
+def get_maria_most_ordered(data):
+    maria_orders = {}
+
+    for order in data:
+        if order['cliente'] == 'maria':
+            dish = order['pedido']
+            if dish in maria_orders:
+                maria_orders[dish] += 1
+            else:
+                maria_orders[dish] = 1
+
+    return max(maria_orders, key=maria_orders.get)
+
+
+def get_arnaldo_hamburguer_orders(data):
+    arnaldo_hamburguers = 0
+
+    for order in data:
+        if order['cliente'] == 'arnaldo' and order['pedido'] == 'hamburguer':
+            arnaldo_hamburguers += 1
+
+    return arnaldo_hamburguers
 
 
 def analyze_log(path_to_file):
@@ -15,16 +38,5 @@ def analyze_log(path_to_file):
     except FileNotFoundError:
         raise FileNotFoundError(f"Arquivo inexistente: '{path_to_file}'")
 
-    maria_orders = {}
-
-    for order in data:
-        if order['cliente'] == 'maria':
-            dish = order['pedido']
-            if dish in maria_orders:
-                maria_orders[dish] += 1
-            else:
-                maria_orders[dish] = 1
-
-    maria_most_ordered_dish = max(maria_orders, key=maria_orders.get)
-
-    print(maria_most_ordered_dish)
+    maria = get_maria_most_ordered(data)
+    arnaldo = get_arnaldo_hamburguer_orders(data)
