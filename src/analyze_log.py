@@ -7,5 +7,5 @@ def analyze_log(path_to_file):
     try:
         with open(path_to_file, "r") as file:
             print(file)
-    except FileNotFoundError:
-        pass
+    except Exception:
+        raise FileNotFoundError(f"Arquivo inexistente: '{path_to_file}'")
