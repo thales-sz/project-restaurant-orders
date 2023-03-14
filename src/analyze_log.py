@@ -1,6 +1,21 @@
 import csv
 
 
+def get_joao_orders(data):
+    joao_dishes = set()
+    joao_days = set()
+
+    for order in data:
+        if order['cliente'] == 'joao':
+            joao_dishes.add(order['pedido'])
+            joao_days.add(order['dia'])
+
+    all_dishes = set(order['pedido'] for order in data)
+    all_days = set(order['dia'] for order in data)
+
+    return all_dishes - joao_dishes, all_days - joao_days
+
+
 def get_maria_most_ordered(data):
     maria_orders = {}
 
@@ -40,3 +55,13 @@ def analyze_log(path_to_file):
 
     maria = get_maria_most_ordered(data)
     arnaldo = get_arnaldo_hamburguer_orders(data)
+    joao_dishes, joao_days = get_joao_orders(data)
+
+    with open('data/mkt_campaign.txt', mode='w') as file:
+        new_file = '\n'.join([
+            maria,
+            str(arnaldo),
+            str(joao_dishes),
+            str(joao_days)
+        ])
+        file.write(new_file)
